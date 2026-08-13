@@ -1,0 +1,46 @@
+package main
+
+import (
+	"log"
+
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/taquion/kurovtheworld/characters"
+)
+
+const (
+	screenWidth  = 320
+	screenHeight = 240
+)
+
+type Game struct {
+	mainCharacter characters.MainCharacter
+	pixels        []byte
+}
+
+func (g *Game) Update() error {
+	g.mainCharacter.Update()
+	return nil
+}
+
+func (g *Game) Draw(screen *ebiten.Image) {
+	if g.pixels == nil {
+		g.pixels = make([]byte, screenWidth*screenHeight*4)
+	}
+	g.mainCharacter.Draw(screen)
+}
+
+func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
+	return screenWidth, screenHeight
+}
+
+func main() {
+	g := &Game{
+		mainCharacter: *characters.NewCharacter(),
+	}
+
+	ebiten.SetWindowSize(screenWidth*2, screenHeight*2)
+	ebiten.SetWindowTitle("Game of Life (Ebitengine Demo)")
+	if err := ebiten.RunGame(g); err != nil {
+		log.Fatal(err)
+	}
+}
