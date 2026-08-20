@@ -37,15 +37,24 @@ type MainCharacter struct {
 	action       channels.UserCharacterChannel
 	screenWidth  int
 	screenHeight int
-	keys         []ebiten.Key
 	key          ebiten.Key
 }
 
 func (g *MainCharacter) Update() error {
 	g.count++
-	if inpututil.IsKeyJustPressed(g.key) {
+	if inpututil.IsKeyJustReleased(0) { // A
+		g.posX--
+	}
+	if inpututil.IsKeyJustReleased(3) { // D
 		g.posX++
 	}
+	if inpututil.IsKeyJustReleased(18) { // S
+		g.posY++
+	}
+	if inpututil.IsKeyJustReleased(22) { // W
+		g.posY--
+	}
+
 	return nil
 }
 
@@ -85,14 +94,14 @@ func (g *MainCharacter) Init() {
 	}
 }
 
-func NewCharacter(action chan channels.UserCharacterChannel, screenWidth, screenHeight, posX, posY int) *MainCharacter {
+func NewCharacter(action chan channels.UserCharacterChannel, screenWidth, screenHeight int, posX, posY float64) *MainCharacter {
 	w := &MainCharacter{
 		count: 0,
 		// action:       action,
 		screenWidth:  screenWidth,
 		screenHeight: screenHeight,
-		// posX:         posX,
-		// posY:         posY,
+		posX:         posX,
+		posY:         posY,
 	}
 
 	w.Init()

@@ -6,7 +6,6 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/taquion/kurovtheworld/channels"
 	"github.com/taquion/kurovtheworld/characters"
-	"github.com/taquion/kurovtheworld/controls"
 )
 
 const (
@@ -16,8 +15,8 @@ const (
 
 type Game struct {
 	mainCharacter characters.MainCharacter
-	control       controls.KeyboardControl
-	pixels        []byte
+	// control       controls.KeyboardControl
+	pixels []byte
 }
 
 func (g *Game) Update() error {
@@ -38,10 +37,10 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 
 func main() {
 	action := make(chan channels.UserCharacterChannel)
-	mainCharacter := *characters.NewCharacter(action, screenWidth, screenHeight, 250, 100)
+	mainCharacter := *characters.NewCharacter(action, screenWidth, screenHeight, 250, 250)
 	g := &Game{
 		mainCharacter: mainCharacter,
-		control:       *controls.NewKeyboardControl(screenWidth, screenHeight, mainCharacter),
+		// control:       *controls.NewKeyboardControl(screenWidth, screenHeight, mainCharacter),
 	}
 
 	ebiten.SetWindowSize(screenWidth*2, screenHeight*2)
